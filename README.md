@@ -3,7 +3,7 @@
 
 
 ## Description
-TravelTip is an app that keeps a list of favorite locations
+TravelTip is an app that keeps a list of your favorite locations
 
 ## Main Features
 - The app allows the user to keep and manage locations
@@ -24,6 +24,14 @@ TravelTip is an app that keeps a list of favorite locations
 - Reflected in query params 
 - Copy url to clipboard
 - Share via Web-Share API
+
+## Latest Updates
+- Added safety fatures to prevent accidental location deleting
+- Added location sorting by creation time
+- Improved text filtering abilities
+- The user can now see real-time distance from each of his locations
+- Added more location stats
+- Improved UX & UI
 
 ## Location
 Here is the format of the location object:
