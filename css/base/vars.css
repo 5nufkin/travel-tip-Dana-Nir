@@ -1,4 +1,15 @@
 :root {
+  --bg1: #818181;
+  --bg2: #424559;
+  --bg3: #6b6b6b;
+  --color1: #ffffff;
+  --color2: #ff8d00;
+  --color3: #88adff;
+  --color4: #ff8d00;
+  --gray1: #d3d3d3;
+}
+
+/* :root {
     --bg1: darkslateblue;
     --bg2: darkorchid;
     --bg3: darkmagenta;
@@ -7,7 +18,7 @@
     --color3: gold;
     --color4: goldenrod;
     --gray1: lightgray;
-}
+} */
 
 /* Another theme */
 /* :root {
