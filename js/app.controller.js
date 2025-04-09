@@ -194,6 +194,10 @@ function displayLoc(loc) {
   el.querySelector('.loc-name').innerText = loc.name
   el.querySelector('.loc-address').innerText = loc.geo.address
   el.querySelector('.loc-rate').innerHTML = '★'.repeat(loc.rate)
+  if (gUserPos) {
+    el.querySelector('.distance-from-my-position').innerHTML = 
+    `Distance: ${utilService.getDistance(gUserPos, {lat: loc.geo.lat, lng: loc.geo.lng}, 'K')} KM.`
+  }
   el.querySelector('[name=loc-copier]').value = window.location
   el.classList.add('show')
 
