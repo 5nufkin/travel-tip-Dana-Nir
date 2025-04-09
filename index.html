@@ -77,6 +77,21 @@
     </div>
   </main>
 
+  <dialog class="edit-loc-modal" data-geo="" data-loc="">
+    <input type="text" class="edit-address">
+    <!-- <select name="edit-rate" id="edit-rate" class="edit-rate"></select> -->
+    <select class="edit-rate">
+        <option value="select-rate" selected>Select Rate</option>
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+    <button onclick="app.onEditLoc()">Save</button>
+  </dialog>
+
   <pre class="debug" hidden></pre>
   <div class="user-msg"></div>
 

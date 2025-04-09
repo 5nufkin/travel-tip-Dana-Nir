@@ -16,6 +16,7 @@ window.app = {
   onShareLoc,
   onSetSortBy,
   onSetFilterBy,
+  onEditLoc,
 }
 
 let gUserPos
@@ -112,24 +113,33 @@ function onSearchAddress(ev) {
 }
 
 function onAddLoc(geo) {
-  const locName = prompt('Loc name', geo.address || 'Just a place')
-  if (!locName) return
+  // const locName = prompt('Loc name', geo.address || 'Just a place')
+  const elModal = document.querySelector('.edit-loc-modal')
+  elModal.setAttribute('data-geo', JSON.stringify(geo))
+  elModal.querySelector('.edit-address').value = geo.address || 'Just a place'
+  elModal.querySelector('.edit-rate').value = 'select-rate'
+  elModal.showModal()
+  // console.log('geo at addLoc: ', geo)
 
-  const loc = {
-    name: locName,
-    rate: +prompt(`Rate (1-5)`, '3'),
-    geo
-  }
-  locService.save(loc)
-    .then((savedLoc) => {
-      flashMsg(`Added Location (id: ${savedLoc.id})`)
-      utilService.updateQueryParams({ locId: savedLoc.id })
-      loadAndRenderLocs()
-    })
-    .catch(err => {
-      console.error('OOPs:', err)
-      flashMsg('Cannot add location')
-    })
+  // const locName = elModal.querySelector('.edit-address').value
+  // const locRate = elModal.querySelector('.edit-rate').value
+  // if (!locName) return
+
+  // const loc = {
+  //   name: locName,
+  //   rate: +prompt(`Rate (1-5)`, '3'),
+  //   geo
+  // }
+  // locService.save(loc)
+  //   .then((savedLoc) => {
+  //     flashMsg(`Added Location (id: ${savedLoc.id})`)
+  //     utilService.updateQueryParams({ locId: savedLoc.id })
+  //     loadAndRenderLocs()
+  //   })
+  //   .catch(err => {
+  //     console.error('OOPs:', err)
+  //     flashMsg('Cannot add location')
+  //   })
 }
 
 function loadAndRenderLocs() {
@@ -162,20 +172,25 @@ function onPanToUserPos() {
 function onUpdateLoc(locId) {
   locService.getById(locId)
     .then(loc => {
-      const rate = prompt('New rate?', loc.rate)
-      if (rate && rate !== loc.rate) {
-        loc.rate = rate
-        locService.save(loc)
-          .then(savedLoc => {
-            flashMsg(`Rate was set to: ${savedLoc.rate}`)
-            loadAndRenderLocs()
-          })
-          .catch(err => {
-            console.error('OOPs:', err)
-            flashMsg('Cannot update location')
-          })
+      const elModal = document.querySelector('.edit-loc-modal')
+      elModal.querySelector('.edit-address').value = loc.geo.address
+      elModal.querySelector('.edit-rate').value = loc.rate
+      elModal.setAttribute('data-loc', JSON.stringify(loc))
+      elModal.showModal()
+      // const rate = prompt('New rate?', loc.rate)
+      // if (rate && rate !== loc.rate) {
+      //   loc.rate = rate
+      //   locService.save(loc)
+      //     .then(savedLoc => {
+      //       flashMsg(`Rate was set to: ${savedLoc.rate}`)
+      //       loadAndRenderLocs()
+      //     })
+          // .catch(err => {
+          //   console.error('OOPs:', err)
+          //   flashMsg('Cannot update location')
+          // })
 
-      }
+      // }
     })
 }
 
@@ -338,4 +353,49 @@ function cleanStats(stats) {
     return acc
   }, [])
   return cleanedStats
+}
+
+function onEditLoc() {
+  const elModal = document.querySelector('.edit-loc-modal')
+  const locName = elModal.querySelector('.edit-address').value
+  const locRate = elModal.querySelector('.edit-rate').value
+  if (!locName) return
+  if (!locRate) return
+  
+  if (elModal.getAttribute('data-loc')) {
+    const selectedLoc = JSON.parse(elModal.getAttribute('data-loc'))
+    if (locRate && locRate !== selectedLoc) {
+      selectedLoc.rate = locRate
+      locService.save(selectedLoc)
+        .then(savedLoc => {
+          flashMsg(`Rate was set to: ${savedLoc.rate}`)
+          loadAndRenderLocs()
+          elModal.setAttribute('data-loc', '')
+        })
+        .catch(err => {
+          console.error('OOPs:', err)
+          flashMsg('Cannot update location')
+        })
+      }
+  } else if (elModal.getAttribute('data-geo')) {
+    const loc = {
+      name: locName,
+      rate: locRate,
+      geo: JSON.parse(elModal.getAttribute('data-geo'))
+    }  
+    locService.save(loc)
+      .then((savedLoc) => {
+        flashMsg(`Added Location (id: ${savedLoc.id})`)
+        utilService.updateQueryParams({ locId: savedLoc.id })
+        loadAndRenderLocs()
+        elModal.setAttribute('data-geo', '')
+      })
+      .catch(err => {
+        console.error('OOPs:', err)
+        flashMsg('Cannot add location')
+      })
+  }
+  elModal.close()
+
+
 }
