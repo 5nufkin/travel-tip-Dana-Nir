@@ -362,12 +362,11 @@ function onEditLoc() {
   const elModal = document.querySelector('.edit-loc-modal')
   const locName = elModal.querySelector('.edit-address').value
   const locRate = elModal.querySelector('.edit-rate').value
-  if (!locName) return
-  if (!locRate) return
+  if (!locName || !locRate) return
   
   if (elModal.getAttribute('data-loc')) {
     const selectedLoc = JSON.parse(elModal.getAttribute('data-loc'))
-    if (locRate && locRate !== selectedLoc) {
+    if (locRate && locRate !== selectedLoc.rate) {
       selectedLoc.rate = locRate
       locService.save(selectedLoc)
         .then(savedLoc => {
