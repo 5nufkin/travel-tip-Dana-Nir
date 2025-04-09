@@ -96,12 +96,13 @@ function onRemoveLoc(locId) {
 function onSearchAddress(ev) {
   ev.preventDefault()
   const el = document.querySelector('[name=address]')
+  
   mapService.lookupAddressGeo(el.value)
     .then(geo => {
       mapService.panTo(geo)
     })
     .catch(err => {
-      console.error('OOPs:', err)
+      console.error('OOPS:', err)
       flashMsg('Cannot lookup address')
     })
 }
@@ -131,7 +132,7 @@ function loadAndRenderLocs() {
   locService.query()
     .then(renderLocs)
     .catch(err => {
-      console.error('OOPs:', err)
+      console.error('OOPS:', err)
       flashMsg('Cannot load locations')
     })
 }
