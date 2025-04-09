@@ -44,7 +44,7 @@ function renderLocs(locs) {
             <h4>  
                 <span>${loc.name}</span>
                 <span class="distance-from-my-position">
-                ${gUserPos ? ('Distance: '+utilService.getDistance(gUserPos, {lat: loc.geo.lat, lng: loc.geo.lng}, 'K')+' KM.')  : ''}
+                ${gUserPos ? setDistance(loc)  : ''}
                 </span>
                 <span title="${loc.rate} stars">${'★'.repeat(loc.rate)}</span>
             </h4>
@@ -71,6 +71,10 @@ function renderLocs(locs) {
     displayLoc(selectedLoc)
   }
   document.querySelector('.debug').innerText = JSON.stringify(locs, null, 2)
+}
+
+function setDistance (loc) {
+  return `Distance: ${utilService.getDistance(gUserPos, {lat: loc.geo.lat, lng: loc.geo.lng}, 'K')} KM.`
 }
 
 function onRemoveLoc(locId) {
@@ -197,7 +201,7 @@ function displayLoc(loc) {
   el.querySelector('.loc-rate').innerHTML = '★'.repeat(loc.rate)
   if (gUserPos) {
     el.querySelector('.distance-from-my-position').innerHTML = 
-    `Distance: ${utilService.getDistance(gUserPos, {lat: loc.geo.lat, lng: loc.geo.lng}, 'K')} KM.`
+    setDistance(loc)
   }
   el.querySelector('[name=loc-copier]').value = window.location
   el.classList.add('show')
