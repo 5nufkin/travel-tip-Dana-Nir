@@ -50,13 +50,12 @@ function query() {
                 locs = locs.slice(startIdx, startIdx + PAGE_SIZE)
             }
 
-            if (gSortBy.rate !== undefined) {
-                locs.sort((p1, p2) => (p1.rate - p2.rate) * gSortBy.rate)
+            const sortKey = Object.keys(gSortBy)
+            if (gSortBy[sortKey] !== undefined) {
+                locs.sort((p1, p2) => (p1[sortKey] - p2[sortKey]) * gSortBy[sortKey])
             } else if (gSortBy.name !== undefined) {
                 locs.sort((p1, p2) => p1.name.localeCompare(p2.name) * gSortBy.name)
-            } else if (gSortBy.createdAt !== undefined) {
-                locs.sort((p1, p2) => (p1.createdAt - p2.createdAt) * gSortBy.createdAt)
-            }
+            } 
 
             return locs
         })
@@ -101,10 +100,7 @@ function getLocCountByRateMap() {
 }
 
 function setSortBy(sortBy = {}) {
-    console.log('sortBy: ', sortBy)
-    console.log('gSortBy: ', gSortBy)
     gSortBy = sortBy
-    console.log('gSortBy: ', gSortBy)
 }
 
 function _createLocs() {
